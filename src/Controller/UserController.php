@@ -95,7 +95,27 @@ class UserController extends AbstractController
     }
 
 
-    
+    /**
+     * @Route("/users/update/{id}", methods={"POST"}, name="update_users")
+     */
+
+    public function updateUser (ManagerRegistry $doctrine, Request $request, User $user )
+    {
+        $entityManager = $doctrine->getManager();
+
+        $user->setLastName($request->request->get('last_name'));
+        $user->setFirstName($request->request->get('first_name'));
+        $user->setEmail($request->request->get('email'));
+
+        $entityManager->persist($user);
+
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Utilisateur mis à jour');
+       
+        return $this->redirectToRoute('users');
+    }
+
 
 
 

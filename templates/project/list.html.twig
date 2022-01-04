@@ -5,7 +5,7 @@
   <!-- Basic Page Needs
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta charset="utf-8">
-  <title>Users</title>
+  <title>Projets</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -32,7 +32,7 @@
   <div class="container">
     <div class="row">
       <div class="one-half column" style="margin-top: 25%">
-        <h4>Liste des utilisateurs</h4>
+        <h4>Liste des projets</h4>
       </div>
     </div>
 
@@ -41,25 +41,25 @@
             <table class="u-full-width">
                 <thead>
                     <tr>
-                        <th>Nom</th>
-                        <th>Prénom</th>
-                        <th>Email</th>
+                        <th>Nom Projet</th>
+                        <th>Date début</th>
+                        <th>Date fin</th>
                         <th>
-                            <a href="/users/add/" class="button button-primary">Créer user</a></button>                        
+                            <a href="/projects/add/" class="button button-primary">Créer projet</a></button>                        
                         </th>
                     </tr>
                 </thead>
 
                 <tbody>
-{% for user in users %}
+{% for project in projects %}
                     <tr>
-                        <td>{{user.getLastName}}</td>
-                        <td>{{user.getFirstName}}</td>
-                        <td>{{user.getEmail}}</td>
+                        <td>{{project.getName}}</td>
+                        <td>{{project.getStartDate|date('d M Y')}}</td>
+                        <td>{{project.getEndDate|date('d M Y')}}</td>
                         <td>
-                            <a class="button button-primary" href="/users/edit/{{user.getId}}">Edit</a>
-                            <a class="button button-primary" href="/users/{{user.getId}}/projects">Projets</a>
-                            <a class="button button-primary" href="/users/{{user.getId}}/tasks">Taches</a>
+                            <a class="button button-primary" href="/projects/edit/{{project.getId}}">Edit</a>
+                            <a class="button button-primary" href="/projects/{{project.getId}}/users">Users</a>
+                            <a class="button button-primary" href="/projects/{{project.getId}}/tasks">Tâches</a>
                         </td>
                     </tr>
 {% endfor %}

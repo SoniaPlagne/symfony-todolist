@@ -5,7 +5,7 @@
   <!-- Basic Page Needs
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta charset="utf-8">
-  <title>Détails Utilisateur</title>
+  <title>Nouveau Projet</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -30,44 +30,51 @@
 <body>
 
     <div class="container">
-
-
         <div class="row">
-            <div class="one-half column">
-                <h4>Affichage utilisateur</h4>
-            </div>
+        <div class="one-half column">
+            <h4>Créer un nouveau projet</h4>
+        </div>
         </div>
 
-        <form action="/users/update/{{user.getId}}" method="POST">
+        <form action="/projects/save" method="POST">
             <div class="row">            
                 <div class="two columns">
-                    <label for="last_name">Nom</label>
+                    <label for="name">Nom du projet</label>
                 </div>
                 <div class="ten columns">
-                    <input class="u-full-width" type="text" id="last_name" name="last_name" value="{{user.getLastName}}">
+                    <input class="u-full-width" type="text" id="name" name="name">
                 </div>
             </div>
 
             <div class="row">     
                 <div class="two columns">
-                    <label for="first_name">Prénom</label>
+                    <label for="description">Description</label>
                 </div>
                 <div class="ten columns">
-                    <input class="u-full-width" type="text" id="first_name" name="first_name" value="{{user.getFirstName}}">
+                    <input class="u-full-width" type="text" id="description" name="description">
                 </div>
             </div>
 
             <div class="row">    
                 <div class="two columns">
-                    <label for="email">Email</label>
+                    <label for="start-date">Date de début</label>
                 </div>
                 <div class="ten columns">
-                    <input class="u-full-width" type="text" id="email" name="email" value="{{user.getEmail}}">
+                    <input class="u-full-width" type="date" id="start-date" name="start-date" min="2020-12-31">
                 </div>
             </div>
 
-            <a class="button button-primary" href="/users">Retour</a>
-            <a class="button button-primary" href="/users/delete/{{user.getId}}">Supprimer</a>
+            <div class="row">    
+                <div class="two columns">
+                    <label for="end-date">Date de fin</label>
+                </div>
+                <div class="ten columns">
+                    <input class="u-full-width" type="date" id="end-date" name="end-date" min="2020-12-31">
+                </div>
+            </div>
+
+            <a class="button button-primary" href="/projects">Retour</a>
+
             <input class="button-primary" type="submit" value="Save">
         
         </form>   
