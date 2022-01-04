@@ -34,6 +34,9 @@
       <div class="one-half column" style="margin-top: 25%">
         <h4>Liste des projets</h4>
       </div>
+      <div class="one-half column" style="margin-top: 25%">
+        <a href="/projects/add/" class="button button-primary">Créer projet</a></button>
+      </div>     
     </div>
 
     <div class="row">
@@ -44,9 +47,7 @@
                         <th>Nom Projet</th>
                         <th>Date début</th>
                         <th>Date fin</th>
-                        <th>
-                            <a href="/projects/add/" class="button button-primary">Créer projet</a></button>                        
-                        </th>
+                        
                     </tr>
                 </thead>
 
@@ -56,7 +57,7 @@
                         <td>{{project.getName}}</td>
                         <td>{{project.getStartDate|date('d M Y')}}</td>
                         <td>{{project.getEndDate|date('d M Y')}}</td>
-                        <td>
+                      
                             <a class="button button-primary" href="/projects/edit/{{project.getId}}">Edit</a>
                             <a class="button button-primary" href="/projects/{{project.getId}}/users">Users</a>
                             <a class="button button-primary" href="/projects/{{project.getId}}/tasks">Tâches</a>
