@@ -62,7 +62,7 @@
                     <label for="start-date">Date de début</label>
                 </div>
                 <div class="ten columns">
-                    <input class="u-full-width" type="date" id="start-date" name="start-date" min="2020-12-31" value="{{project.getStartDate|date('d M Y')}}">
+                    <input class="u-full-width" type="text" id="start-date" name="start-date" value="{{project.getStartDate|date('d M Y')}}">
                 </div>
             </div>
 
@@ -71,7 +71,7 @@
                     <label for="end-date">Date de fin</label>
                 </div>
                 <div class="ten columns">
-                    <input class="u-full-width" type="date" id="end-date" name="end-date" min="2020-12-31" value="{{project.getEndDate|date('d M Y')}}">
+                    <input class="u-full-width" type="text" id="end-date" name="end-date" value="{{project.getEndDate|date('d M Y')}}">
                 </div>
             </div>    
 

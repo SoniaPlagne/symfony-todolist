@@ -6,6 +6,7 @@ use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ProjectRepository::class)
@@ -22,11 +23,13 @@ class Project
 
     /**
      * @ORM\Column(type="string", length=150)
+     * @Assert\NotBlank
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank
      */
     private $description;
 
@@ -36,9 +39,22 @@ class Project
     private $start_date;
 
     /**
+     * @var string
+     * @Assert\NotNull
+     */
+    private $start_date_str;
+
+    /**
      * @ORM\Column(type="date")
      */
     private $end_date;
+
+    /**
+     * @var string
+     * @Assert\NotNull
+     */
+    private $end_date_str;
+
 
     /**
      * @ORM\OneToMany(targetEntity=Task::class, mappedBy="project", orphanRemoval=true)
@@ -91,9 +107,17 @@ class Project
         return $this;
     }
 
+    public function setStartDateStr(String $start_date_str)
+    {
+        $this->start_date_str = $start_date_str;
+
+    }
+
+
     public function getEndDate(): ?\DateTimeInterface
     {
         return $this->end_date;
+
     }
 
     public function setEndDate(\DateTimeInterface $end_date): self
@@ -102,6 +126,17 @@ class Project
 
         return $this;
     }
+
+
+
+    public function setEndDateStr(String $end_date_str)
+    {
+        $this->end_date_str = $end_date_str;
+
+    }
+
+
+
 
     /**
      * @return Collection|Task[]

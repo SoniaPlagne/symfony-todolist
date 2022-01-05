@@ -13,6 +13,7 @@ use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
 use App\Entity\Project;
 
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProjectController extends AbstractController
 {
@@ -47,17 +48,40 @@ class ProjectController extends AbstractController
 /**
  * @Route("/projects/save", methods={"POST"}, name="save_projects")
  */
-    public function saveProject(ManagerRegistry $doctrine, Request $request): Response
+    public function saveProject(ManagerRegistry $doctrine, Request $request, ValidatorInterface $validator): Response
     {
         $entityManager = $doctrine->getManager();
         
 
         $project = new Project();
-        $startDate = new DateTime($request->request->get('start-date'));
-        $endDate = new DateTime($request->request->get('end-date'));
+        
 
         $project->setName($request->request->get('name'));
         $project->setDescription($request->request->get('description'));
+
+        $project->setStartDateStr($request->request->get('start_date'));
+        $project->setEndDateStr($request->request->get('end_date'));
+
+
+        $errors = $validator->validate($project);
+
+        if (count($errors) > 0) 
+        {
+            /*
+            * Uses a __toString method on the $errors variable which is a
+            * ConstraintViolationList object. This gives us a nice string
+            * for debugging.
+            */
+            $errorsString = (string) $errors;
+            
+            $this->addFlash('error', '$errorString');
+
+            return $this->redirectToRoute('add_projects');
+        }
+
+        $startDate = new DateTime($request->request->get('start_date'));
+        $endDate = new DateTime($request->request->get('end_date'));
+
         $project->setStartDate($startDate);
         $project->setEndDate($endDate);
 
