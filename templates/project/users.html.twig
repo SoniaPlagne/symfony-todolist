@@ -40,9 +40,10 @@
 
         <div class="row">
 {% for user in users %}
-            
-          <input type="checkbox" id="project_user" name="project_user">
-          <label for="project_user">{{user.getLastName}} {{user.getFirstName}}</label>
+            <input type="checkbox" id="project_user" name="project_user">
+
+            <label for="project_user">{{user.getLastName}} {{user.getFirstName}}</label>
+
             
 {% endfor %}
           <input class="button-primary" type="submit" value="Save">
