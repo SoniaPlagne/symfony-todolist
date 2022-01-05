@@ -40,7 +40,8 @@ class Project
 
     /**
      * @var string
-     * @Assert\NotNull
+     * @Assert\NotBlank
+     * @Assert\Date
      */
     private $start_date_str;
 
@@ -51,7 +52,8 @@ class Project
 
     /**
      * @var string
-     * @Assert\NotNull
+     * @Assert\NotBlank
+     * @Assert\Date
      */
     private $end_date_str;
 

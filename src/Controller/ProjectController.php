@@ -3,11 +3,16 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+
 use Doctrine\Persistence\ManagerRegistry;
+
 use DateTime;
+
+use Psr\Log\LoggerInterface;
 
 use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
@@ -48,7 +53,7 @@ class ProjectController extends AbstractController
 /**
  * @Route("/projects/save", methods={"POST"}, name="save_projects")
  */
-    public function saveProject(ManagerRegistry $doctrine, Request $request, ValidatorInterface $validator): Response
+    public function saveProject(ManagerRegistry $doctrine, Request $request, ValidatorInterface $validator, LoggerInterface $logger): Response
     {
         $entityManager = $doctrine->getManager();
         
@@ -62,6 +67,14 @@ class ProjectController extends AbstractController
         $project->setStartDateStr($request->request->get('start_date'));
         $project->setEndDateStr($request->request->get('end_date'));
 
+        $logger->debug('Erreurs save Projet',
+        [
+            'name'=>$request->request->get('name'),
+            'description'=>$request->request->get('description'),
+            'start_date'=>$request->request->get('start_date'),
+            'end_date'=>$request->request->get('end_date'),
+        ]);
+
 
         $errors = $validator->validate($project);
 
@@ -74,7 +87,7 @@ class ProjectController extends AbstractController
             */
             $errorsString = (string) $errors;
             
-            $this->addFlash('error', '$errorString');
+            $this->addFlash('error', $errorsString);
 
             return $this->redirectToRoute('add_projects');
         }
@@ -151,11 +164,15 @@ class ProjectController extends AbstractController
  * @Route("/projects/{id}/users", methods={"GET"}, name="users_projects")
  */
 
-    public function usersProject (UserRepository $userRepository)
+    public function usersProject (UserRepository $userRepository, Project $project)
     {
         $users=$userRepository->findAll();
 
-        return $this-> render ('project/users.html.twig', ['users'=>$users]);
+        return $this-> render ('project/users.html.twig', 
+        [
+            'users'=>$users,
+            'project'=>$project,
+        ]);
 
     }
 
