@@ -7,6 +7,8 @@ use App\Entity\Task;
 
 use App\Repository\TaskRepository;
 
+use DateTime;
+
 use Doctrine\Persistence\ManagerRegistry;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -47,8 +49,35 @@ class TaskController extends AbstractController
     public function addTasks():Response
     {
         return $this->render ('task/add.html.twig');
+
     }
 
+    /**
+     * @Route("projects/{id}/tasks/save", methods={"POST"}, name="save_tasks")
+     */
+    public function saveTasks(ManagerRegistry $doctrine, Request $request, Project $project): Response
+    {
+        $entityManager = $doctrine->getManager();
+
+        $task = new Task();
+
+        $task->setName($request->request->get('name'));
+        $task->setDescription($request->request->get('description'));
+        $task->setStartDate(new \DateTime($request->request->get('start_date')));
+        $task->setEndDate(new \DateTime($request->request->get('end_date')));
+        $task->setProject($project);
+
+        $entityManager->persist($task);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('tasks', ["id"=> $project->getId()]);
+
+    }
+        
+        
+       
+    
+    
 
 
 
