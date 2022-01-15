@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Project;
+use App\Entity\User;
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\ProjectRepository;
+use App\Repository\UserRepository;
 
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,11 +14,11 @@ use DateTime;
 
 use Psr\Log\LoggerInterface;
 
-use App\Repository\ProjectRepository;
-use App\Repository\UserRepository;
-use App\Entity\Project;
-use App÷\Entity\User;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProjectController extends AbstractController
@@ -36,9 +36,9 @@ class ProjectController extends AbstractController
     /**
      * @Route("/projects", name="projects")
      */
-    public function projects(ProjectRepository $projectrepository): Response
+    public function projects(ProjectRepository $projectRepository): Response
     {
-        $projects=$projectrepository->findAll();
+        $projects=$projectRepository->findAll();
 
         return $this->render('project/list.html.twig', ['projects'=>$projects]);
     }
@@ -137,20 +137,16 @@ class ProjectController extends AbstractController
      * @Route("/projects/update/{id}", methods={"POST"}, name="update_projects")
      */
 
-    public function updateProject (ManagerRegistry $doctrine, Request $request, Project $project)
+    public function updateProject (ManagerRegistry $doctrine, Request $request, Project $project): Response
     {
         $entityManager = $doctrine->getManager();
 
-        $startDate =new DateTime($request->request->get('start-date'));
-        $endDate = new DateTime($request->request->get('end-date'));
-
         $project->setName($request->request->get('name'));
         $project->setDescription($request->request->get('description'));
-        $project->setStartDate($startDate);
-        $project->setEndDate($endDate);
+        $project->setStartDate(new \Datetime($request->request->get('start-date')));
+        $project->setEndDate(new \DateTime($request->request->get('end_date')));
 
         $entityManager->persist($project);
-
         $entityManager->flush();
 
         $this->addFlash('success', 'Projet mis à jour');
@@ -166,10 +162,13 @@ class ProjectController extends AbstractController
     {
         $users=$userRepository->findAll();
 
+        $projectUsers = $project->getUsers();
+
         return $this-> render ('project/users.html.twig', 
         [
             'users'=>$users,
             'project'=>$project,
+            'projectUsers'=>$projectUsers
         ]);
 
     }
@@ -180,11 +179,18 @@ class ProjectController extends AbstractController
     public function saveUsersProject(UserRepository $userRepository,ManagerRegistry $doctrine, Request $request, Project $project): Response
     {
         $entityManager = $doctrine->getManager();
-        
-        $user_project = new UserProject();
+
+        $project->clearUsers();
+
+        $listIdUser = $request->request->get('user_id', []);
+
+        foreach($listIdUser as $userId) 
+        {
+            $user = $userRepository->find($userId);
+            $project->addUser($user);
+        }
 
         $entityManager->persist($project);
-
         $entityManager->flush();
 
         $this->addFlash('success', 'Un ou plusieurs utilisateurs ont été ajoutés au projet');

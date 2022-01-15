@@ -5,7 +5,7 @@
   <!-- Basic Page Needs
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta charset="utf-8">
-  <title>Projets</title>
+  <title>Tâches</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -31,40 +31,44 @@
 
   <div class="container">
     <div class="row">
-      <div class="one-half column" style="margin-top: 15%">
-        <h4>Liste des projets</h4>
-      </div>
-      <div class="one-half column" style="margin-top: 15%">
-        <a href="/projects/add/" class="button button-primary">Créer projet</a>
-      </div>     
+        <div class="one-half column" style="margin-top: 15%">
+            <h4>Liste des tâches du projet </h4>
+        </div>
+        <div class="one-half column" style="margin-top: 15%">
+            <a href="/projects/{id}/tasks/add/" class="button button-primary">Créer tâche</a></button>
+        </div>
     </div>
 
+
+    
     <div class="row">
         <div class="column">
             <table class="u-full-width">
                 <thead>
                     <tr>
-                        <th>Nom Projet</th>
+                        <th>Nom Tâche</th>
+                        <th>Description</th>
                         <th>Date début</th>
                         <th>Date fin</th>
+                       
+                        <th>
                         
                     </tr>
                 </thead>
 
                 <tbody>
-{% for project in projects %}
+{% for task in tasks %}
                     <tr>
-                        <td>{{project.getName}}</td>
-                        <td>{{project.getStartDate|date('d M Y')}}</td>
-                        <td>{{project.getEndDate|date('d M Y')}}</td>
+                        <td>{{task.getName}}</td>
+                        <td>{{task.getDescription}}</td>
+                        <td>{{task.getStartDate|date('d M Y')}}</td>
+                        <td>{{task.getEndDate|date('d M Y')}}</td>
+                        
                         <td>
-                            <a class="button button-primary" href="/projects/edit/{{project.getId}}">Edit</a>
+                            <a class="button button-primary" href="/projects/{id}/tasks/edit/{{task.getId}}">Edit</a>
                         </td>
                         <td>
-                            <a class="button button-primary" href="/projects/{{project.getId}}/users">Users</a>
-                        </td>
-                        <td>    
-                            <a class="button button-primary" href="/projects/{{project.getId}}/tasks">Tâches</a>
+                            <a class="button button-primary" href="/projects/{id}/tasks/delete/{{task.getId}}">Supprimer</a>
                         </td>
                     </tr>
 {% endfor %}
@@ -72,6 +76,9 @@
                 </tbody>
             </table>
          </div>
+
+        <a class="button button-primary" href="projects/">Retour projets</a>
+        
     </div>
 
 

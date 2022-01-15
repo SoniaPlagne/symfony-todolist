@@ -5,7 +5,7 @@
   <!-- Basic Page Needs
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta charset="utf-8">
-  <title>Nouveau Projet</title>
+  <title>Nouvelle Tâche</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -31,29 +31,15 @@
 
     <div class="container">
         <div class="row">
-        <div class="one-half column" style="margin-top: 15%">
-            <h4>Créer un nouveau projet</h4>
-        </div>
-        </div>
-
-{% for label,message in app.flashes%}
-    {% for message in messages%}
-        <div class ="row">
-            <div class ="column">
-                <h3>{{label}}</h3>
-                <p>{{message}}</p>
+            <div class="one-half column" style="margin-top: 15%">
+                <h4>Créer une nouvelle tâche au projet</h4>
             </div>
         </div>
-    {%endfor%}
-{%endfor%}
 
-
-
-
-        <form action="/projects/save" method="POST">
+        <form action="/projects/{id}/tasks/save" method="POST">
             <div class="row">            
                 <div class="two columns">
-                    <label for="name">Nom du projet</label>
+                    <label for="name">Nom de la tâche</label>
                 </div>
                 <div class="ten columns">
                     <input class="u-full-width" type="text" id="name" name="name">
@@ -86,8 +72,6 @@
                     <input class="u-full-width" type="text" id="end_date" name="end_date">
                 </div>
             </div>
-
-            <a class="button button-primary" href="/projects">Retour</a>
 
             <input class="button-primary" type="submit" value="Save">
         

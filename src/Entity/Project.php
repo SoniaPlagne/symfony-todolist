@@ -62,9 +62,15 @@ class Project
      */
     private $tasks;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="projects")
+     */
+    private $users;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
 
@@ -154,6 +160,30 @@ class Project
                 $task->setProject(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        $this->users->removeElement($user);
 
         return $this;
     }
