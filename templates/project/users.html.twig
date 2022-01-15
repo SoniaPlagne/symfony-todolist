@@ -30,22 +30,33 @@
 <body>
 
     <div class="container">
-
-
-        <div class="row">
+      <div class="row">
+        <div class="twelve columns" style="margin-top: 15%">
           <h4>Attribuer les utilisateurs au projet : {{project.getName}}</h4>
         </div>
+      </div>
 
-        <div class="row">
-{% for user in users %}
-            <input type="checkbox" id="project_user" name="project_user">
-
-            <label for="project_user">{{user.getLastName}} {{user.getFirstName}}</label>
+      <div class="row">
+        <div class="column">
+          <table class="u-full-width">
+            {% for user in users %}
+              <tr>
+                <td>
+                  <input type="checkbox" id="project_user" name="project_user">
+                </td>
+                <td>
+                  <label for="project_user">{{user.getLastName}} {{user.getFirstName}}
+                  </label>
+                </td>
+              </tr>
+            {% endfor %}
+           
+          </table>
 
             
-{% endfor %}
-          <input class="button-primary" type="submit" value="Save">
         </div>
+        <input class="button-primary" type="submit" value="Save">
+      </div>
     </div>
 
         

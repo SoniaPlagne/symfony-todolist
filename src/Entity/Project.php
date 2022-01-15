@@ -57,7 +57,6 @@ class Project
      */
     private $end_date_str;
 
-
     /**
      * @ORM\OneToMany(targetEntity=Task::class, mappedBy="project", orphanRemoval=true)
      */
@@ -68,20 +67,20 @@ class Project
         $this->tasks = new ArrayCollection();
     }
 
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
+
     public function getName(): ?string
     {
         return $this->name;
     }
-
     public function setName(string $name): self
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -89,7 +88,6 @@ class Project
     {
         return $this->description;
     }
-
     public function setDescription(string $description): self
     {
         $this->description = $description;
@@ -101,14 +99,11 @@ class Project
     {
         return $this->start_date;
     }
-
     public function setStartDate(\DateTimeInterface $start_date): self
     {
         $this->start_date = $start_date;
-
         return $this;
     }
-
     public function setStartDateStr(String $start_date_str)
     {
         $this->start_date_str = $start_date_str;
@@ -121,23 +116,16 @@ class Project
         return $this->end_date;
 
     }
-
     public function setEndDate(\DateTimeInterface $end_date): self
     {
         $this->end_date = $end_date;
-
         return $this;
     }
-
-
-
     public function setEndDateStr(String $end_date_str)
     {
         $this->end_date_str = $end_date_str;
 
     }
-
-
 
 
     /**

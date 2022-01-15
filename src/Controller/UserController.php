@@ -3,11 +3,12 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\Persistence\ManagerRegistry;
 
+use Doctrine\Persistence\ManagerRegistry;
 
 use App\Repository\UserRepository;
 use App\Entity\User;
@@ -32,7 +33,6 @@ class UserController extends AbstractController
     {
         $users=$userrepository->findAll();
         
-
         return $this->render('user/list.html.twig', ['users'=>$users]);
     }
 

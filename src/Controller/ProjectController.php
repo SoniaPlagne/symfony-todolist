@@ -5,8 +5,8 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +17,7 @@ use Psr\Log\LoggerInterface;
 use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
 use App\Entity\Project;
+use App÷\Entity\User;
 
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -32,9 +33,9 @@ class ProjectController extends AbstractController
         ]);
     }
 
-/**
- * @Route("/projects", name="projects")
- */
+    /**
+     * @Route("/projects", name="projects")
+     */
     public function projects(ProjectRepository $projectrepository): Response
     {
         $projects=$projectrepository->findAll();
@@ -42,28 +43,25 @@ class ProjectController extends AbstractController
         return $this->render('project/list.html.twig', ['projects'=>$projects]);
     }
 
-/**
- * @Route("/projects/add", name="add_projects")
- */
+    /**
+     * @Route("/projects/add", name="add_projects")
+     */
     public function addProject(): Response
     {
         return $this->render ('project/add.html.twig');
     }
 
-/**
- * @Route("/projects/save", methods={"POST"}, name="save_projects")
- */
+    /**
+     * @Route("/projects/save", methods={"POST"}, name="save_projects")
+     */
     public function saveProject(ManagerRegistry $doctrine, Request $request, ValidatorInterface $validator, LoggerInterface $logger): Response
     {
         $entityManager = $doctrine->getManager();
         
-
         $project = new Project();
-        
 
         $project->setName($request->request->get('name'));
         $project->setDescription($request->request->get('description'));
-
         $project->setStartDateStr($request->request->get('start_date'));
         $project->setEndDateStr($request->request->get('end_date'));
 
@@ -103,26 +101,26 @@ class ProjectController extends AbstractController
         $entityManager->flush();
 
         $this->addFlash('success', 'Nouveau projet créé');
-       
+    
         return $this->redirectToRoute('projects');
     }
 
-/**
- * @Route("/projects/edit/{id}", methods={"GET"}, name="edit_projects")
- */
+    /**
+     * @Route("/projects/edit/{id}", methods={"GET"}, name="edit_projects")
+     */
     public function editProject(Project $project)
     {
         return $this->render('project/edit.html.twig',[
-           
+        
             'Id' => $project->getId(),
             'project' => $project,
         ]);
     }
 
 
-/**
- * @Route("/projects/delete/{id}", methods={"GET"}, name="delete_projects")
- */
+    /**
+     * @Route("/projects/delete/{id}", methods={"GET"}, name="delete_projects")
+     */
 
     public function deleteProjects(ManagerRegistry $doctrine, Project $project)
     {
@@ -135,7 +133,7 @@ class ProjectController extends AbstractController
     }
 
 
-/**
+    /**
      * @Route("/projects/update/{id}", methods={"POST"}, name="update_projects")
      */
 
@@ -156,15 +154,15 @@ class ProjectController extends AbstractController
         $entityManager->flush();
 
         $this->addFlash('success', 'Projet mis à jour');
-       
+    
         return $this->redirectToRoute('projects');
     }
 
-/**
- * @Route("/projects/{id}/users", methods={"GET"}, name="users_projects")
- */
+    /**
+     * @Route("/projects/{id}/users", methods={"GET"}, name="users_project")
+     */
 
-    public function usersProject (UserRepository $userRepository, Project $project)
+    public function usersProject (UserRepository $userRepository, Project $project):Response
     {
         $users=$userRepository->findAll();
 
@@ -176,14 +174,13 @@ class ProjectController extends AbstractController
 
     }
 
-/**
- * @Route("/projects/{id}/users/save", methods={"POST"}, name="save_users_projects")
- */
-    public function saveUsersProject(ManagerRegistry $doctrine, Request $request): Response
+    /**
+     * @Route("/projects/{id}/users/save", methods={"POST"}, name="save_users_project")
+     */
+    public function saveUsersProject(UserRepository $userRepository,ManagerRegistry $doctrine, Request $request, Project $project): Response
     {
         $entityManager = $doctrine->getManager();
         
-
         $user_project = new UserProject();
 
         $entityManager->persist($project);
@@ -191,7 +188,7 @@ class ProjectController extends AbstractController
         $entityManager->flush();
 
         $this->addFlash('success', 'Un ou plusieurs utilisateurs ont été ajoutés au projet');
-       
+    
         return $this->redirectToRoute('projects');
     }
 
